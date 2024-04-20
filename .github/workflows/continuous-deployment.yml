@@ -1,0 +1,51 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+        # Check out the repository
+      - name: Checking out repository
+        uses: actions/checkout@v4
+
+        # Create .env file
+      - name: Creating .env file
+        run: |
+          echo "NODE_ENV=production" >> .env
+          echo "PORT=3000" >> .env
+          echo "DATADOG_API_KEY=${{ secrets.DATADOG_API_KEY }}" >> .env
+          echo "MONGODB_HOST=${{ secrets.MONGODB_HOST }}" >> .env
+          echo "MONGODB_USER=${{ secrets.MONGODB_USER }}" >> .env
+          echo "MONGODB_PASSWORD=${{ secrets.MONGODB_PASSWORD }}" >> .env
+          echo "MONGODB_APP_NAME=${{ secrets.MONGODB_APP_NAME }}" >> .env
+
+        # Deploy files to server
+      - name: Deploying files
+        uses: easingthemes/ssh-deploy@v2.1.4
+        env:
+          REMOTE_HOST: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.PRODUCTION_SERVER_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.PRODUCTION_SERVER_KEY }}
+          TARGET: /var/app/crypto-api
+          ARGS: "-rltgoDzvO --exclude='.git*' --exclude='node_modules' --exclude='storage' --exclude='tests' --delete"
+
+        # Install and reload
+      - name: Installing new files
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USER }}
+          key: ${{ secrets.PRODUCTION_SERVER_KEY }}
+          script_stop: true
+          script: |
+            cd /var/app/api.freepethealth.com
+            npm ci
+            npm run reload
