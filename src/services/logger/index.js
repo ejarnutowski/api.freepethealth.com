@@ -1,7 +1,6 @@
 const os = require('os');
 const safeStringify = require('fast-safe-stringify');
 const winston = require('winston');
-
 const config = require('../../config');
 const filesize = require('../../utils/filesize');
 
@@ -61,6 +60,10 @@ const datadogFormat = () => {
   );
 };
 
+const consoleTransport = new winston.transports.Console({
+  format: fileFormat(),
+});
+
 const fileTransport = new winston.transports.File({
   filename: config.logs.filePath,
   format: fileFormat(),
@@ -76,6 +79,11 @@ const datadogTransport = new winston.transports.Http({
   ssl: true,
 });
 
+const environmentTransports = {
+  development: [consoleTransport, fileTransport],
+  production: [fileTransport, datadogTransport],
+};
+
 /**
  * Logger
  *
@@ -89,9 +97,6 @@ const datadogTransport = new winston.transports.Http({
  */
 module.exports = winston.createLogger({
   level: 'info',
-  transports: [
-    fileTransport,
-    datadogTransport,
-  ],
+  transports: environmentTransports[config.app.env],
   exitOnError: false,
 });
