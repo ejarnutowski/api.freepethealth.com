@@ -7,7 +7,6 @@ module.exports = (req, schema) => {
     'body',
     'query',
     'params',
-    'cookies',
   ];
   sources.forEach(source => {
     if (!schema[source]) return;

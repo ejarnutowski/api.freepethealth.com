@@ -36,10 +36,9 @@ module.exports = (req, res, next) => {
       payload.data.request.headers.authorization = '[REDACTED]';
     }
 
-    // Redact cookie header and set in cookies object
+    // Redact cookie header - Sensitive data
     if (payload.data.request.headers.cookie) {
       payload.data.request.headers.cookie = '[REDACTED]';
-      payload.data.request.cookies = req.cookies;
     }
 
     if (res.statusCode < 400) {

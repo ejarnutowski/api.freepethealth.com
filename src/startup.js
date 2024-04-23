@@ -1,4 +1,3 @@
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const http = require('http');
@@ -25,7 +24,6 @@ module.exports = async () => {
   app.disable('x-powered-by');
   app.use(logRequest);
   app.use(cors(corsConfig));
-  app.use(cookieParser());
   app.use(registerResponses);
   app.use(express.json());
   app.use(routes);
