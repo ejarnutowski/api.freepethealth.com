@@ -48,7 +48,7 @@ const connect = async () => {
       log.warn('MongoDB closed');
     });
 
-    mongoose.connect(config.mongodb.uri).then(() => {
+    mongoose.connect(config.mongodb.uri[config.app.env]).then(() => {
       mongoose.connection.on('error', error => {
         log.error({
           message: 'MongoDB error',
