@@ -25,9 +25,9 @@ module.exports = (error, req, res, next) => {
     logError(req, levels.warn, error, {
       source: error.source,
       field: error.field,
-      message: error.message,
+      message: error.details,
     });
-    return res.sendError(error);
+    return res.sendError(req, error.statusCode, error.message);
   }
 
   /*
@@ -35,7 +35,7 @@ module.exports = (error, req, res, next) => {
    */
   if (error instanceof UnauthorizedError) {
     logError(req, levels.warn, error);
-    return res.sendError(error);
+    return res.sendError(req, error.statusCode, error.message);
   }
 
   /*
@@ -43,7 +43,7 @@ module.exports = (error, req, res, next) => {
    */
   if (error instanceof NotFoundError) {
     logError(req, levels.warn, error);
-    return res.sendError(error);
+    return res.sendError(req, error.statusCode, error.message);
   }
 
   /*
@@ -54,12 +54,12 @@ module.exports = (error, req, res, next) => {
    */
   if (error instanceof ApplicationError) {
     logError(req, levels.error, error);
-    return res.sendError(error);
+    return res.sendError(req, error.statusCode, error.message);
   }
 
   /*
    * Default catch-all error
    */
   logError(req, levels.error, error);
-  return res.sendError(error);
+  return res.sendError(req, 500, 'Application error');
 };

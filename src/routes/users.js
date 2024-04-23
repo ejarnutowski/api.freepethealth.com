@@ -1,22 +1,20 @@
-const joi = require('joi');
 const router = require('express').Router();
 const catchAsync = require('../middleware/catchAsync');
-const validate = require('../validation');
+const userRepository = require('../db/repositories/user');
+const rules = require('../validation/rules');
+const validate = require('../validation/validate');
 
 /**
- * Get all users
+ * Create user
  */
-router.get('/', (req, res) => {
-  res.send({
-    name: 'elliott',
+router.post('/', catchAsync(async (req, res) => {
+  validate(req, {
+    body: {
+      name: rules.string.required(),
+    }
   });
-});
-
-// /**
-//  * Get all users
-//  */
-// router.get('/', catchAsync(async (req, res) => {
-//   res.send(await productRepository.getAll());
-// }));
+  const user = await userRepository.createOne({ name: req.body.name });
+  res.send(user);
+}));
 
 module.exports = router;

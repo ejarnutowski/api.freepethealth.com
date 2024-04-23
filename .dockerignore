@@ -1,0 +1,12 @@
+# Directories
+.git
+.github
+keys
+node_modules
+storage
+
+# File types
+*.env
+
+# Logs
+*.log

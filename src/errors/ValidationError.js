@@ -2,7 +2,7 @@ const ApplicationError = require('./ApplicationError');
 
 module.exports = class ValidationError extends ApplicationError {
   constructor(source, field, details, message) {
-    super(message);
+    super();
     this.statusCode = 400;
     this.source = source;
     this.field = field;

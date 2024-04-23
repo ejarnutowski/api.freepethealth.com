@@ -1,18 +1,21 @@
 module.exports = (req, res, next) => {
 
-  /**
-   * Send error response
-   *
-   * @param {Error} error
-   */
-  res.sendError = error => {
-    const body = {
+  res.sendError = (req, statusCode, message) => {
+    res.status(statusCode).send({
       error: {
         requestId: req.requestId,
-        message: error.message,
-      }
-    };
-    res.status(error.statusCode).send(body);
+        message,
+      },
+    });
+  };
+
+  res.sendNotFound = (req) => {
+    res.status(404).send({
+      error: {
+        requestId: req.requestId,
+        message: 'Not found',
+      },
+    });
   };
 
   next();

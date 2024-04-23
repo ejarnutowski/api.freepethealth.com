@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodata:/data/db
+
+#  api:
+#    depends_on:
+#      - mongo
+#    build: .
+#    restart: unless-stopped
+#    ports:
+#      - "3000:3000"
+#    volumes:
+#      - ./index.js:/app/index.js
+
+volumes:
+  mongodata:
+    driver: local

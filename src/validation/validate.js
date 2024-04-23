@@ -1,7 +1,7 @@
 const joi = require('joi');
 const ValidationError = require('../errors/ValidationError');
 
-const validate = (req, schema) => {
+module.exports = (req, schema) => {
   const sources = [
     'headers',
     'body',
@@ -20,8 +20,4 @@ const validate = (req, schema) => {
       );
     }
   });
-};
-
-module.exports = {
-  validate,
 };

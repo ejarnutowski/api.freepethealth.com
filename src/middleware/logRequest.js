@@ -42,11 +42,6 @@ module.exports = (req, res, next) => {
       payload.data.request.cookies = req.cookies;
     }
 
-    // Redact "S" cookie - Sensitive data
-    if (payload.data.request.cookies && payload.data.request.cookies['S']) {
-      payload.data.request.cookies['S'] = '[REDACTED]';
-    }
-
     if (res.statusCode < 400) {
       log.info(payload);
     } else if (res.statusCode < 500) {

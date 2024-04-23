@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const NotFoundError = require('../errors/NotFoundError');
+const admin = require('./admin');
+const pets = require('./pets');
 const users = require('./users');
 
-router.get('/', (req, res) => {
-  res.send('Welcome');
-});
-
-router.use('/users', require('./users'));
+router.use('/admin', admin);
+router.use('/pets', pets);
+router.use('/users', users);
 
 // Prevent "Not Found" error on favicon requests
 router.get('/favicon.ico', (req, res) => {
@@ -18,7 +18,7 @@ router.get('/robots.txt', (req, res) => {
   res.send('User-agent: *\nDisallow: /');
 });
 
-// Catch all - not found
+// Catch all
 router.all('*', (req, res) => {
   throw new NotFoundError;
 });
