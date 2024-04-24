@@ -125,7 +125,7 @@ GET /admin/pets/:id/records
 
 > :warning: **WARNING:** THIS WILL DELETE ALL DATABASE DATA
 
-POST /admin/purge-data
+POST /admin/tools/purge-data
 ```
 # HEADER
 "x-user-id": "{YOUR DB USER ID}"
