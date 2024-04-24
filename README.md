@@ -2,7 +2,8 @@
 
 ## Installation
 
-###System requirements
+### System requirements
+
 * Docker
 * Git
 
@@ -17,13 +18,14 @@ cd api.freepethealth.com
 docker compose up
 ```
 
-###Usage
+### Usage
 
-Test from a browser at: http://localhost/3000
+Test from a browser at: http://localhost:3000
 
-###Endpoints
+### User Endpoints
 
-####Create User
+#### Create User
+
 POST /user
 ```
 # BODY
@@ -32,14 +34,16 @@ POST /user
 }
 ```
 
-####Get All Pets
+#### Get All Pets
+
 GET /pets
 ```
 # HEADER
 "x-user-id": "{YOUR DB USER ID}"
 ```
 
-####Create One Pet
+#### Create One Pet
+
 POST /pets
 ```
 # HEADER
@@ -53,23 +57,24 @@ POST /pets
 }
 ```
 
-####Get One Pet
+#### Get One Pet
+
 GET /pets/:id
 ```
 # HEADER
-{
-    "x-user-id": "{YOUR DB USER ID}"
-}
+"x-user-id": "{YOUR DB USER ID}"
 ```
 
-####Get All Pet Records
+#### Get All Pet Records
+
 GET /pets/:id/records
 ```
 # HEADER
 "x-user-id": "{YOUR DB USER ID}"
 ```
 
-####Create One Pet Record
+#### Create One Pet Record
+
 POST /pets/:id/records
 ```
 # HEADER
@@ -89,3 +94,43 @@ POST /pets/:id/records
   }
 }
 ```
+
+### Admin Endpoints
+
+#### Get All Pets
+
+GET /admin/pets
+```
+# HEADER
+"x-user-id": "{YOUR DB USER ID}"
+```
+
+#### Get One Pet
+
+GET /admin/pets/:id
+```
+# HEADER
+"x-user-id": "{YOUR DB USER ID}"
+```
+
+#### Get All Pet Records
+
+GET /admin/pets/:id/records
+```
+# HEADER
+"x-user-id": "{YOUR DB USER ID}"
+```
+
+#### Purge Data
+
+> :warning: **WARNING:** THIS WILL DELETE ALL DATABASE DATA
+
+POST /admin/purge-data
+```
+# HEADER
+"x-user-id": "{YOUR DB USER ID}"
+
+# BODY
+{
+  "confirm": true
+}
